@@ -1,24 +1,32 @@
 const fetch = require('node-fetch');
 let personObj = undefined;
 
-    fetch('https://swapi.dev/api/people/1/')
-    .then((response) => {
-        return response.json()
-    })
+let getPerson = function(num) {
+    fetch(`https://swapi.dev/api/people/${num}/`)
+        .then(response => response.json())
+}
+
+getPerson(1)
     .then(person => {
-        personObj = person
-        console.log(person.name)
-        const homeworld = person.homeworld;
-        return fetch(homeworld).then(response => response.json())
+        console.log('Name: ', person.name)
+    })
+    .then(() => {
+        console.log(getPerson(1))
+        return fetch(getPerson(1).homeworld).then(response => response.json())
     })
     .then(planet => {
-        console.log(planet.name)
-        const films = personObj.films
-        return films
-    }).then(films => {
-        let filmArray = films.map(film => {
-            return fetch(film).then(response => response.json())
-        })
-        
+        console.log('Planet: ', planet.name)
     })
-    
+
+    // .then(planet => {
+    //     console.log('Planet: ', planet.name)
+    //     return personObj.films
+    // })
+    // .then(films => {
+    //     let filmArray = films.map(film => {
+    //         return fetch(film).then(response => response.json())
+    //     })
+    //     Promise.all(filmArray).then((films) => {
+    //         console.log('Films: ', films.map(film => film.title).join(', '));
+    //     });
+    // })
