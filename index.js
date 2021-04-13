@@ -5,5 +5,10 @@ fetch('https://swapi.dev/api/people/1/')
         return response.json()
     })
     .then(person => {
-        console.log(person);
-    });
+        const homeworld = person.homeworld;
+        const fetchPlanet = fetch(homeworld).then(response => response.json());
+        return fetchPlanet;
+    })
+    .then(planet => {
+        console.log(planet.name);
+    })
